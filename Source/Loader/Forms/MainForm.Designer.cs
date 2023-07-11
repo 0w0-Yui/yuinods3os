@@ -53,6 +53,7 @@ namespace Loader
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
             this.BuildInfoLabel = new System.Windows.Forms.Label();
             this.ContinualUpdateTimer = new System.Windows.Forms.Timer(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
@@ -73,6 +74,7 @@ namespace Loader
             this.filterBox = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.SettingsButton = new System.Windows.Forms.Button();
+            this.PingButton = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.minimumPlayersBox)).BeginInit();
             this.SuspendLayout();
@@ -115,9 +117,9 @@ namespace Loader
             this.LaunchButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.LaunchButton.ImageIndex = 4;
             this.LaunchButton.ImageList = this.serverListImageList;
-            this.LaunchButton.Location = new System.Drawing.Point(751, 414);
+            this.LaunchButton.Location = new System.Drawing.Point(780, 414);
             this.LaunchButton.Name = "LaunchButton";
-            this.LaunchButton.Size = new System.Drawing.Size(174, 35);
+            this.LaunchButton.Size = new System.Drawing.Size(145, 35);
             this.LaunchButton.TabIndex = 2;
             this.LaunchButton.Text = "Launch Game";
             this.LaunchButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -167,7 +169,8 @@ namespace Loader
             this.ImportedServerListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader4,
-            this.columnHeader2});
+            this.columnHeader2,
+            this.columnHeader3});
             this.ImportedServerListView.FullRowSelect = true;
             this.ImportedServerListView.GridLines = true;
             this.ImportedServerListView.HideSelection = false;
@@ -200,6 +203,10 @@ namespace Loader
             // 
             this.columnHeader2.Text = "Description";
             this.columnHeader2.Width = 500;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Ping";
             // 
             // BuildInfoLabel
             // 
@@ -332,40 +339,37 @@ namespace Loader
             // label3
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.label3.Location = new System.Drawing.Point(259, 424);
+            this.label3.Location = new System.Drawing.Point(309, 424);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(61, 23);
+            this.label3.Size = new System.Drawing.Size(55, 20);
             this.label3.TabIndex = 15;
             this.label3.Text = "Server IP";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // label4
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.label4.Location = new System.Drawing.Point(386, 424);
+            this.label4.Location = new System.Drawing.Point(466, 424);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(102, 15);
+            this.label4.Size = new System.Drawing.Size(55, 20);
             this.label4.TabIndex = 17;
             this.label4.Text = "Private IP";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // label5
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.label5.Location = new System.Drawing.Point(541, 424);
+            this.label5.Location = new System.Drawing.Point(623, 424);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(102, 15);
+            this.label5.Size = new System.Drawing.Size(55, 20);
             this.label5.TabIndex = 19;
             this.label5.Text = "Public IP";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // privateIpBox
             // 
             this.privateIpBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.privateIpBox.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.privateIpBox.Location = new System.Drawing.Point(494, 424);
+            this.privateIpBox.Location = new System.Drawing.Point(527, 424);
             this.privateIpBox.Name = "privateIpBox";
-            this.privateIpBox.Size = new System.Drawing.Size(99, 19);
+            this.privateIpBox.Size = new System.Drawing.Size(90, 20);
             this.privateIpBox.TabIndex = 21;
             this.privateIpBox.Text = "255.255.255.255";
             // 
@@ -373,9 +377,9 @@ namespace Loader
             // 
             this.publicIpBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.publicIpBox.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.publicIpBox.Location = new System.Drawing.Point(649, 424);
+            this.publicIpBox.Location = new System.Drawing.Point(684, 424);
             this.publicIpBox.Name = "publicIpBox";
-            this.publicIpBox.Size = new System.Drawing.Size(99, 19);
+            this.publicIpBox.Size = new System.Drawing.Size(90, 20);
             this.publicIpBox.TabIndex = 22;
             this.publicIpBox.Text = "255.255.255.255";
             // 
@@ -383,9 +387,9 @@ namespace Loader
             // 
             this.serverIpBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.serverIpBox.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.serverIpBox.Location = new System.Drawing.Point(328, 424);
+            this.serverIpBox.Location = new System.Drawing.Point(370, 424);
             this.serverIpBox.Name = "serverIpBox";
-            this.serverIpBox.Size = new System.Drawing.Size(99, 19);
+            this.serverIpBox.Size = new System.Drawing.Size(90, 20);
             this.serverIpBox.TabIndex = 23;
             this.serverIpBox.Text = "255.255.255.255";
             // 
@@ -413,18 +417,30 @@ namespace Loader
             this.SettingsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.SettingsButton.ImageIndex = 11;
             this.SettingsButton.ImageList = this.serverListImageList;
-            this.SettingsButton.Location = new System.Drawing.Point(223, 414);
+            this.SettingsButton.Location = new System.Drawing.Point(266, 414);
             this.SettingsButton.Name = "SettingsButton";
             this.SettingsButton.Size = new System.Drawing.Size(37, 35);
             this.SettingsButton.TabIndex = 26;
             this.SettingsButton.UseVisualStyleBackColor = true;
             this.SettingsButton.Click += new System.EventHandler(this.SettingsButton_Click);
             // 
+            // PingButton
+            // 
+            this.PingButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.PingButton.Image = ((System.Drawing.Image)(resources.GetObject("PingButton.Image")));
+            this.PingButton.Location = new System.Drawing.Point(223, 414);
+            this.PingButton.Name = "PingButton";
+            this.PingButton.Size = new System.Drawing.Size(37, 35);
+            this.PingButton.TabIndex = 27;
+            this.PingButton.UseVisualStyleBackColor = true;
+            this.PingButton.Click += new System.EventHandler(this.OnPingClicked);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(934, 458);
+            this.Controls.Add(this.PingButton);
             this.Controls.Add(this.SettingsButton);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.filterBox);
@@ -491,6 +507,8 @@ namespace Loader
         private System.Windows.Forms.TextBox filterBox;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Button SettingsButton;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.Button PingButton;
     }
 }
 

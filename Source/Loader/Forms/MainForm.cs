@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Net.NetworkInformation;
 
 namespace Loader
 {
@@ -173,7 +174,7 @@ namespace Loader
 
                 if (ServerItem == null)
                 {
-                    ServerItem = new ListViewItem(new string[3], -1);
+                    ServerItem = new ListViewItem(new string[4], -1);
                     ImportedServerListView.Items.Add(ServerItem);
                 }
 
@@ -184,6 +185,7 @@ namespace Loader
                 ServerItem.SubItems[0].Text = Config.Name;
                 ServerItem.SubItems[1].Text = Config.ManualImport ? "Not Available For Manual Import" : Config.PlayerCount.ToString();
                 ServerItem.SubItems[2].Text = Config.Description;
+                ServerItem.SubItems[3].Text = "-1";
                 ServerItem.BackColor = (IsOfficial ? Color.PaleGoldenrod : Color.Transparent);
 
                 if (IsOfficial)
@@ -802,6 +804,47 @@ namespace Loader
         private void OnRefreshClicked(object sender, EventArgs e)
         {
             QueryServers();
+        }
+
+        private void OnPingClicked(object sender, EventArgs e)
+        {
+            string selectedServerIp = this.serverIpBox.Text;
+            if (selectedServerIp == "255.255.255.255")
+            {
+                MessageBox.Show("Please select a server", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                string ping = PingHost(selectedServerIp);
+                ImportedServerListView.SelectedItems[0].SubItems[3].Text = ping;
+            }
+        }
+
+        public static string PingHost(string nameOrAddress)
+        {
+            string ping = null;
+            Ping pinger = null;
+
+            try
+            {
+                pinger = new Ping();
+                PingReply reply = pinger.Send(nameOrAddress);
+                ping = reply.RoundtripTime.ToString();
+            }
+            catch (PingException)
+            {
+                MessageBox.Show("Ping server failed", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            finally
+            {
+                if (pinger != null)
+                {
+                    pinger.Dispose();
+                }
+            }
+            if (ping == "0")
+                return "Timeout";
+            return ping;
         }
 
         private void OnClickGithubLink(object sender, LinkLabelLinkClickedEventArgs e)

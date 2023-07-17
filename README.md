@@ -1,4 +1,4 @@
-![Dark Souls 3 - Open Server](./Resources/banner.png?raw=true)
+![Dark Souls 3 - Open Server](https://raw.githubusercontent.com/0w0-Yui/yuinods3os/main/Source/Loader/Resources/banner1.png)
 
 ![GitHub license](https://img.shields.io/github/license/TLeonardUK/ds3os)
 ![GitHub release](https://img.shields.io/github/release/TLeonardUK/ds3os)

@@ -22,6 +22,9 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Net.NetworkInformation;
+using Loader.Utils;
+using System.Net.Http.Json;
+using static System.Windows.Forms.AxHost;
 
 namespace Loader
 {
@@ -36,7 +39,7 @@ namespace Loader
         private string MachinePublicIp = "";
 
         private string[] ColumnNames = { "Server Name", "Player Count", "Description" };
-        
+
         public static string OfficialServer = NetUtils.HostnameToIPv4("ds3os-server.timleonard.uk");
 
         public MainForm()
@@ -48,6 +51,12 @@ namespace Loader
 
             MachinePrivateIp = NetUtils.GetMachineIPv4(false);
             MachinePublicIp = NetUtils.GetMachineIPv4(true);
+
+            string loaderData = InstallationUtils.LoaderData;
+            if (!Directory.Exists(loaderData))
+            {
+                Directory.CreateDirectory(loaderData);
+            }
         }
 
         private void SaveConfig()
@@ -104,7 +113,7 @@ namespace Loader
             {
                 LaunchEnabled = false;
                 LaunchButton.Text = "Not Logged Into Steam";
-            } 
+            }
 #if RELEASE
             else if (RunningProcessHandle != IntPtr.Zero)
             {
@@ -204,7 +213,7 @@ namespace Loader
                 {
                     ServerItem.ImageIndex = 8;
                 }
-                
+
             }
 
             for (int i = 0; i < ImportedServerListView.Items.Count; /* empty */)
@@ -296,29 +305,62 @@ namespace Loader
 
         private void OnImportServerConfig(object sender, EventArgs e)
         {
-            using (OpenFileDialog Dialog = new OpenFileDialog())
+            ImportServerConfig();
+        }
+
+        [STAThread]
+        private void ImportServerConfig()
+        {
+            Thread thread = new Thread((ThreadStart)(() =>
             {
-                Dialog.Filter = "Dark Souls III - Server Config|*.ds3osconfig|All Files|*.*";
-                Dialog.Title = "Select Server Configuration File";
-
-                if (Dialog.ShowDialog() == DialogResult.OK)
+                using (OpenFileDialog Dialog = new OpenFileDialog())
                 {
-                    string JsonContents = File.ReadAllText(Dialog.FileName);
-                    ServerConfig NewServerConfig;
+                    Dialog.Filter = "Dark Souls III - Server Config|*.ds3osconfig|All Files|*.*";
+                    Dialog.Title = "Select Server Configuration File";
 
-                    if (!ServerConfig.FromJson(JsonContents, out NewServerConfig))
+                    if (Dialog.ShowDialog() == DialogResult.OK)
                     {
-                        MessageBox.Show("Failed to load server configuration, are you sure its in the correct format?", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    else
-                    {
-                        ServerList.Servers.Add(NewServerConfig);
-                    }
+                        string JsonContents = File.ReadAllText(Dialog.FileName);
+                        ServerConfig NewServerConfig;
 
-                    BuildServerList();
-                    SaveConfig();
-                    ValidateUI();
+                        if (!ServerConfig.FromJson(JsonContents, out NewServerConfig))
+                        {
+                            MessageBox.Show("Failed to load server configuration, are you sure its in the correct format?", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                        else
+                        {
+                            ServerList.Servers.Clear();
+                            ServerList.Servers.Add(NewServerConfig);
+                            SaveServerConfig(JsonContents);
+                        }
+                        if (InvokeRequired)
+                        {
+                            this.Invoke(new MethodInvoker(delegate
+                            {
+                                BuildServerList();
+                                SaveConfig();
+                                ValidateUI();
+                            }));
+                        }
+                    }
                 }
+            }));
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+        }
+
+        private void SaveServerConfig(string JsonContents)
+        {
+            string fileName = InstallationUtils.LoaderConfig;
+            if (!File.Exists(fileName))
+            {
+                File.Create(fileName).Close();
+                File.WriteAllText(fileName, JsonContents);
+            }
+            else
+            {
+                File.Delete(fileName);
+                SaveServerConfig(JsonContents);
             }
         }
 
@@ -390,6 +432,7 @@ namespace Loader
                 List<ServerConfig> Servers = MasterServerApi.ListServers();
                 if (Servers != null)
                 {
+                    // ImportServerConfig();
                     this.Invoke((MethodInvoker)delegate
                     {
                         ProcessServerQueryResponse(Servers);
@@ -504,6 +547,7 @@ namespace Loader
 
         private void OnLaunch(object sender, EventArgs e)
         {
+            InstallationUtils.CheckRuntime(ExeLocationTextBox.Text);
             ServerConfig Config = GetConfigFromHostname((ImportedServerListView.SelectedItems[0].Tag as ServerConfig).Hostname);
 
             if (string.IsNullOrEmpty(Config.PublicKey))
@@ -535,7 +579,7 @@ namespace Loader
                     }
                 }
             }
-            
+
             PerformLaunch(Config);
         }
 
@@ -586,7 +630,7 @@ namespace Loader
             }
 
             string ConnectionHostname = ResolveConnectIp(Config);
-            
+
             DarkSoulsLoadConfig LoadConfig;
             if (!BuildConfig.ExeLoadConfiguration.TryGetValue(ExeUtils.GetExeSimpleHash(ExeLocationTextBox.Text), out LoadConfig))
             {
@@ -596,7 +640,7 @@ namespace Loader
 
             string ExeLocation = ExeLocationTextBox.Text;
             string ExeDirectory = Path.GetDirectoryName(ExeLocation);
- 
+
             string AppIdFile = Path.Combine(ExeDirectory, "steam_appid.txt");
             if (!File.Exists(AppIdFile))
             {
@@ -612,7 +656,7 @@ namespace Loader
                 IntPtr.Zero,
                 IntPtr.Zero,
                 false,
-                ProcessCreationFlags.ZERO_FLAG, 
+                ProcessCreationFlags.ZERO_FLAG,
                 IntPtr.Zero,
                 ExeDirectory,
                 ref StartupInfo,
@@ -683,10 +727,10 @@ namespace Loader
                 }
                 if (PathAddress == IntPtr.Zero)
                 {
-                    MessageBox.Show("Failed to allocation memory in process: GetLastError=" + Marshal.GetLastWin32Error(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);                    
+                    MessageBox.Show("Failed to allocation memory in process: GetLastError=" + Marshal.GetLastWin32Error(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                
+
                 int BytesWritten;
                 bool WriteSuccessful = WinAPI.WriteProcessMemory(ProcessInfo.hProcess, PathAddress, InjectorPathBuffer, (uint)InjectorPathBuffer.Length, out BytesWritten);
                 if (!WriteSuccessful || BytesWritten != InjectorPathBuffer.Length)
@@ -705,7 +749,7 @@ namespace Loader
 
             // Otherwise patch the server key into the process memory.
             else
-            {            
+            {
                 byte[] DataBlock = PatchingUtils.MakeEncryptedServerInfo(ConnectionHostname, Config.PublicKey, LoadConfig.Key);
                 if (DataBlock == null)
                 {
@@ -736,7 +780,7 @@ namespace Loader
                         {
                             Thread.Sleep(500);
                         }
-                    }            
+                    }
                     else
                     {
                         break;
@@ -851,7 +895,7 @@ namespace Loader
         {
             Process.Start(new ProcessStartInfo
             {
-                FileName = "https://github.com/tleonarduk/ds3os",
+                FileName = "https://github.com/0w0-Yui/yuinods3os",
                 UseShellExecute = true
             });
         }
@@ -866,7 +910,12 @@ namespace Loader
         {
             Process.Start(new ProcessStartInfo
             {
-                FileName = "https://discord.gg/pBmquc9Jkj",
+                FileName = "https://space.bilibili.com/276237700",
+                UseShellExecute = true
+            });
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://global.lioat.cn/",
                 UseShellExecute = true
             });
         }
@@ -882,7 +931,7 @@ namespace Loader
                 }
                 Sorter.SortColumn = e.Column;
             }
-            
+
             Sorter.SortOrder = (Sorter.SortOrder + 1) % 3;
 
             if (Sorter.SortOrder == 0)

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Loader.Utils;
 
 namespace Loader
 {
@@ -36,7 +37,7 @@ namespace Loader
         }
 
         private void CopySavesClicked(object sender, EventArgs e)
-        {        
+        {
             string BasePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\DarkSoulsIII";
 
             if (!Directory.Exists(BasePath))
@@ -62,7 +63,7 @@ namespace Loader
 
                 FilesCopied++;
             }
-            
+
             MessageBox.Show("Copied " + FilesCopied.ToString() + " retail saves to ds3os.");
         }
 
@@ -77,6 +78,11 @@ namespace Loader
             ProgramSettings.Default.Save();
 
             UpdateState();
+        }
+
+        private void RestoreSteamButton_Click(object sender, EventArgs e)
+        {
+            InstallationUtils.RestoreSteam(ExeLocation);
         }
     }
 }

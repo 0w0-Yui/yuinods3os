@@ -20,7 +20,7 @@ No, the server authenticates steam tickets. Please do not ask about piracy, stea
 FROM SOFTWARE deserves your support too for the excellent work they do, please buy their games if you can.
 
 # Where can I download it?
-Downloads are available on the github releases page - https://github.com/TLeonardUK/ds3os/releases
+Downloads are available on the github releases page - https://github.com/0w0-Yui/yuinods3os/releases
 
 # How do I use it?
 Once built you should have a folder called Bin, there are 2 subfolders of relevance. Loader and Server. 

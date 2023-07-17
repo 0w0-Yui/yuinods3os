@@ -24,6 +24,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\DarkSoulsIII.exe" />
+    <None Remove="Resources\generate_interfaces_file.exe" />
+    <None Remove="Resources\steam_api.dll" />
+    <None Remove="Resources\steam_api64.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\DarkSoulsIII.exe" />
+    <EmbeddedResource Include="Resources\generate_interfaces_file.exe" />
+    <EmbeddedResource Include="Resources\steam_api.dll" />
+    <EmbeddedResource Include="Resources\steam_api64.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="ProgramSettings.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
@@ -34,12 +48,21 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Update="Properties\ResourcesSteam.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ResourcesSteam.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\ResourcesSteam.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResourcesSteam.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

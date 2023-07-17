@@ -18,6 +18,10 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
+using System.IO;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using System.Windows.Forms;
+using Loader.Utils;
 
 namespace Loader
 {
@@ -100,15 +104,35 @@ namespace Loader
 
         public static List<ServerConfig> ListServers()
         {
-            ListServersResponse Result = DoRequest<ListServersResponse>(HttpMethod.Get, ProgramSettings.Default.master_server_url + "/api/v1/servers");
-            if (Result != null && Result.Servers != null)
+            //ListServersResponse Result = DoRequest<ListServersResponse>(HttpMethod.Get, ProgramSettings.Default.master_server_url + "/api/v1/servers");
+            //if (Result != null && Result.Servers != null)
+            //{
+            //    return Result.Servers;
+            //}
+            //else
+            //{
+            //    return null;
+            //}
+            string configPath = InstallationUtils.LoaderConfig;
+            if (File.Exists(configPath))
             {
-                return Result.Servers;
+                string JsonContents = File.ReadAllText(configPath);
+                ServerConfig NewServerConfig;
+
+                if (!ServerConfig.FromJson(JsonContents, out NewServerConfig))
+                {
+                    MessageBox.Show("Failed to load server configuration, are you sure its in the correct format?", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    List<ServerConfig> Servers = new List<ServerConfig>
+                    {
+                        NewServerConfig
+                    };
+                    return Servers;
+                }
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
 
         public static string GetPublicKey(string ServerIpAddress, string Password)

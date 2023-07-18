@@ -66,6 +66,7 @@ namespace Loader
             ProgramSettings.Default.server_config_json = ServerList.ToJson();
             ProgramSettings.Default.hide_passworded = hidePasswordedBox.Checked;
             ProgramSettings.Default.minimum_players = (int)minimumPlayersBox.Value;
+            ProgramSettings.Default.use_old_ds = OldStartModeBox.Checked;
 
             ProgramSettings.Default.Save();
         }
@@ -113,7 +114,7 @@ namespace Loader
             if (!SteamUtils.IsSteamRunningAndLoggedIn())
             {
                 LaunchEnabled = false;
-                LaunchButton.Text = "Not Logged Into Steam";
+                LaunchButton.Text = "未登录Steam";
             }
 #if RELEASE
             else if (RunningProcessHandle != IntPtr.Zero)
@@ -548,7 +549,10 @@ namespace Loader
 
         private void OnLaunch(object sender, EventArgs e)
         {
-            InstallationUtils.CheckRuntime(ExeLocationTextBox.Text);
+            if (ProgramSettings.Default.use_old_ds)
+                InstallationUtils.CheckRuntime(ExeLocationTextBox.Text);
+            else
+                InstallationUtils.RestoreSteam(ExeLocationTextBox.Text);
             ServerConfig Config = GetConfigFromHostname((ImportedServerListView.SelectedItems[0].Tag as ServerConfig).Hostname);
 
             if (string.IsNullOrEmpty(Config.PublicKey))

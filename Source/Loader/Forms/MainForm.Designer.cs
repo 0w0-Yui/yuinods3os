@@ -39,7 +39,7 @@ namespace Loader
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] { "Name", "Players", "Description" }, 0);
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem(new string[] { "Name", "Players", "Description" }, 0);
             ImportButton = new System.Windows.Forms.Button();
             serverListImageList = new System.Windows.Forms.ImageList(components);
             LaunchButton = new System.Windows.Forms.Button();
@@ -72,6 +72,7 @@ namespace Loader
             panel2 = new System.Windows.Forms.Panel();
             SettingsButton = new System.Windows.Forms.Button();
             PingButton = new System.Windows.Forms.Button();
+            OldStartModeBox = new System.Windows.Forms.CheckBox();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)minimumPlayersBox).BeginInit();
             SuspendLayout();
@@ -164,8 +165,8 @@ namespace Loader
             ImportedServerListView.FullRowSelect = true;
             ImportedServerListView.GridLines = true;
             ImportedServerListView.HideSelection = false;
-            listViewItem1.StateImageIndex = 0;
-            ImportedServerListView.Items.AddRange(new System.Windows.Forms.ListViewItem[] { listViewItem1 });
+            listViewItem2.StateImageIndex = 0;
+            ImportedServerListView.Items.AddRange(new System.Windows.Forms.ListViewItem[] { listViewItem2 });
             ImportedServerListView.Location = new System.Drawing.Point(8, 199);
             ImportedServerListView.MultiSelect = false;
             ImportedServerListView.Name = "ImportedServerListView";
@@ -423,11 +424,22 @@ namespace Loader
             PingButton.UseVisualStyleBackColor = true;
             PingButton.Click += OnPingClicked;
             // 
+            // OldStartModeBox
+            // 
+            OldStartModeBox.AutoSize = true;
+            OldStartModeBox.Location = new System.Drawing.Point(300, 172);
+            OldStartModeBox.Name = "OldStartModeBox";
+            OldStartModeBox.Size = new System.Drawing.Size(208, 19);
+            OldStartModeBox.TabIndex = 28;
+            OldStartModeBox.Text = "兼容模式（联机失败尝试此项）";
+            OldStartModeBox.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(942, 459);
+            Controls.Add(OldStartModeBox);
             Controls.Add(PingButton);
             Controls.Add(SettingsButton);
             Controls.Add(panel2);
@@ -496,6 +508,7 @@ namespace Loader
         private System.Windows.Forms.Button SettingsButton;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.Button PingButton;
+        private System.Windows.Forms.CheckBox OldStartModeBox;
     }
 }
 

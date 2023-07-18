@@ -94,5 +94,17 @@ namespace Loader {
                 this["use_seperate_saves"] = value;
             }
         }
+
+        public bool use_old_ds
+        {
+            get
+            {
+                return ((bool)(this["use_old_ds"]));
+            }
+            set
+            {
+                this["use_old_ds"] = value;
+            }
+        }
     }
 }

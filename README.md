@@ -1,4 +1,4 @@
-![Dark Souls 3 - Open Server](./Resources/banner.png?raw=true)
+![Dark Souls 3 - Open Server](https://raw.githubusercontent.com/0w0-Yui/yuinods3os/main/Source/Loader/Resources/banner1.png)
 
 ![GitHub license](https://img.shields.io/github/license/TLeonardUK/ds3os)
 ![GitHub release](https://img.shields.io/github/release/TLeonardUK/ds3os)
@@ -12,7 +12,7 @@ Idealistically made for the purpose of allow better alternatives to playing mods
 
 :bangbang: This project is still a work in progress, no guarantees are given over its stability (that said it works quite well now!). 
 
-If you have any trouble join the discord for tech-support: https://discord.gg/pBmquc9Jkj
+If you have any trouble join the discord for tech-support: dgybYui(Wechat)
 
 # Can I use it with a pirated game?
 No, the server authenticates steam tickets. Please do not ask about piracy, steam emulators or the like, we have no interest in supporting them. 
@@ -20,7 +20,7 @@ No, the server authenticates steam tickets. Please do not ask about piracy, stea
 FROM SOFTWARE deserves your support too for the excellent work they do, please buy their games if you can.
 
 # Where can I download it?
-Downloads are available on the github releases page - https://github.com/TLeonardUK/ds3os/releases
+Downloads are available on the github releases page - https://github.com/0w0-Yui/yuinods3os/releases
 
 # How do I use it?
 Once built you should have a folder called Bin, there are 2 subfolders of relevance. Loader and Server. 

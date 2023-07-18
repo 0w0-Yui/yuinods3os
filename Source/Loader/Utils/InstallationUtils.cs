@@ -17,8 +17,10 @@ namespace Loader.Utils
 {
     public class InstallationUtils
     {
+        public static string LoaderCache = GetPath("%appdata%\\LioatDS3OS\\cache");
+        public static string LoaderCacheGoldberg = GetPath("%appdata%\\LioatDS3OS\\goldberg");
         public static string LoaderData = GetPath("%appdata%\\LioatDS3OS");
-        private static string LoaderCache = GetPath("%appdata%\\LioatDS3OS\\cache");
+        public static string LoaderDataGoldberg = GetPath("%appdata%\\Goldberg SteamEmu Saves\\settings");
         public static string LoaderConfig = GetPath("%appdata%\\LioatDS3OS\\lioat.ds3config");
         
         private static string GetPath(string path)
@@ -76,7 +78,7 @@ namespace Loader.Utils
                     //    //Process.Start(String.Format("{0}{1}", path, res[1]), String.Format("{0}{1}", path, $"\"{res[3]}\""));
                     //}
                 }
-                File.Create(LoaderCache);
+                File.Create(LoaderCache).Close();
             }
         }
 
@@ -99,11 +101,8 @@ namespace Loader.Utils
             }
             File.Delete(LoaderCache);
             File.Delete(LoaderConfig);
+            File.Delete(LoaderCacheGoldberg);
         }
 
-        public static void GoldbergSetup()
-        {
-
-        }
     }
 }

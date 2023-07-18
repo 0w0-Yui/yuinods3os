@@ -52,11 +52,12 @@ namespace Loader
             MachinePrivateIp = NetUtils.GetMachineIPv4(false);
             MachinePublicIp = NetUtils.GetMachineIPv4(true);
 
-            string loaderData = InstallationUtils.LoaderData;
-            if (!Directory.Exists(loaderData))
-            {
-                Directory.CreateDirectory(loaderData);
-            }
+            string dataLoader = InstallationUtils.LoaderData;
+            string dataGoldberg = InstallationUtils.LoaderDataGoldberg;
+            if (!Directory.Exists(dataLoader))
+                Directory.CreateDirectory(dataLoader);
+            if (!Directory.Exists(dataGoldberg))
+                Directory.CreateDirectory(dataGoldberg);
         }
 
         private void SaveConfig()
@@ -579,7 +580,12 @@ namespace Loader
                     }
                 }
             }
-
+            if (!File.Exists(InstallationUtils.LoaderCacheGoldberg))
+            {
+                SettingsForm dialog = new SettingsForm();
+                dialog.ExeLocation = ExeLocationTextBox.Text;
+                dialog.ShowDialog();
+            }
             PerformLaunch(Config);
         }
 

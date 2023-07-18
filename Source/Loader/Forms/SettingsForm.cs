@@ -16,6 +16,8 @@ namespace Loader
     {
         public string ExeLocation = "";
         private bool DoNotSaveSettings = false;
+        string[] settings = { "account_name.txt", "language.txt", "user_steam_id.txt" };
+        string dataGoldberg = InstallationUtils.LoaderDataGoldberg;
 
         public SettingsForm()
         {
@@ -27,6 +29,25 @@ namespace Loader
             DoNotSaveSettings = true;
             UseSeperateSavesCheckbox.Checked = ProgramSettings.Default.use_seperate_saves;
             DoNotSaveSettings = false;
+
+            if (File.Exists(InstallationUtils.LoaderCacheGoldberg))
+            {
+                foreach (string setting in settings)
+                {
+                    if (setting == settings[0])
+                        SteamUserNameText.Text = File.ReadAllText(String.Format("{0}\\{1}", dataGoldberg, settings[0]));
+                    if (setting == settings[1])
+                        GameLanguageText.Text = File.ReadAllText(String.Format("{0}\\{1}", dataGoldberg, settings[1]));
+                    if (setting == settings[2])
+                        Steam64IDText.Text = File.ReadAllText(String.Format("{0}\\{1}", dataGoldberg, settings[2]));
+                }
+            }
+            else
+            {
+                SteamUserNameText.Text = "";
+                GameLanguageText.Text = "tchinese";
+                Steam64IDText.Text = "";
+            }
 
             UpdateState();
         }
@@ -83,6 +104,29 @@ namespace Loader
         private void RestoreSteamButton_Click(object sender, EventArgs e)
         {
             InstallationUtils.RestoreSteam(ExeLocation);
+        }
+
+        private void SaveGoldBergSettingButton_Click(object sender, EventArgs e)
+        {
+            if (SteamUserNameText.Text == String.Empty || GameLanguageText.Text == String.Empty || Steam64IDText.Text == String.Empty)
+            {
+                MessageBox.Show("请填写所有字段", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            else
+            {
+                foreach(string setting in settings)
+                {
+                    if (!File.Exists(String.Format("{0}\\{1}", dataGoldberg, setting)))
+                        File.Create(String.Format("{0}\\{1}", dataGoldberg, setting)).Close();
+                }
+                File.WriteAllText(String.Format("{0}\\{1}", dataGoldberg, settings[0]), SteamUserNameText.Text);
+                File.WriteAllText(String.Format("{0}\\{1}", dataGoldberg, settings[1]), GameLanguageText.Text);
+                File.WriteAllText(String.Format("{0}\\{1}", dataGoldberg, settings[2]), Steam64IDText.Text);
+                File.Create(InstallationUtils.LoaderCacheGoldberg).Close();
+                MessageBox.Show("设置已保存", "信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.Close();
+            }
         }
     }
 }

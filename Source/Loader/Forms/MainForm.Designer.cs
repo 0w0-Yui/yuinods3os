@@ -39,7 +39,7 @@ namespace Loader
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem(new string[] { "Name", "Players", "Description" }, 0);
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] { "Name", "Players", "Description" }, 0);
             ImportButton = new System.Windows.Forms.Button();
             serverListImageList = new System.Windows.Forms.ImageList(components);
             LaunchButton = new System.Windows.Forms.Button();
@@ -165,8 +165,8 @@ namespace Loader
             ImportedServerListView.FullRowSelect = true;
             ImportedServerListView.GridLines = true;
             ImportedServerListView.HideSelection = false;
-            listViewItem2.StateImageIndex = 0;
-            ImportedServerListView.Items.AddRange(new System.Windows.Forms.ListViewItem[] { listViewItem2 });
+            listViewItem1.StateImageIndex = 0;
+            ImportedServerListView.Items.AddRange(new System.Windows.Forms.ListViewItem[] { listViewItem1 });
             ImportedServerListView.Location = new System.Drawing.Point(8, 199);
             ImportedServerListView.MultiSelect = false;
             ImportedServerListView.Name = "ImportedServerListView";
